@@ -9,13 +9,12 @@ import { IoMdHeartEmpty } from "react-icons/io";
 import { useRef, useContext, useState } from "react";
 import { CiSettings } from "react-icons/ci";
 import { MdOutlineLogout } from "react-icons/md";
-// import { UserContext } from '../../context/UserContext';
+import { UserContext } from '../../context/UserContext';
 import { MdOutlineLogin } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 function Navbar() {
-  // const { user, handleLogout } = useContext(UserContext);
-  const { user, handleLogout } = useState(true);
+  const { user, handleLogout } = useContext(UserContext);
   const navigate = useNavigate();
   const navbar = useRef();
 
@@ -38,6 +37,7 @@ function Navbar() {
             </span>
           </div>
           <div className="nav-desktop">
+          {user ? (
             <ul>
               <li>
                 <Link to={"/inicio"}>Inicio</Link>{" "}
@@ -52,19 +52,38 @@ function Navbar() {
                 <Link to={"/certificados-examen"}>Certificados examen</Link>{" "}
               </li>
             </ul>
+          ):(
+            <></>
+          )}
           </div>
+
           <div className="icon-nav">
-            {/* <Link
-              to={"/"}
-              className="nav-link"
-              onClick={() => {
-                handleLogout(false), closeToggleMenu();
-              }}
-            >
-              <MdOutlineLogout className="icon" />
-              <span className="link">Cerrar sesión</span>
-            </Link> */}
-          </div>
+          {user ? (
+               
+                  <Link
+                    to={"/inicio"}
+                    className="nav-link"
+                    onClick={() => {
+                      handleLogout(), closeToggleMenu();
+                    }}
+                  >
+                    <MdOutlineLogout className="icon" />
+                    <span className="link">Cerrar sesión</span>
+                  </Link>
+                
+              ) : (
+               
+                  <Link
+                    to={"/login"}
+                    className="nav-link"
+                    onClick={() => closeToggleMenu()}
+                  >
+                    <MdOutlineLogin className="icon" />
+                    <span className="link">Iniciar sesión</span>
+                  </Link>
+            
+              )}
+                    </div>
         </div>
 
         <div className="sidebar">
@@ -151,7 +170,7 @@ function Navbar() {
                     to={"/"}
                     className="nav-link"
                     onClick={() => {
-                      handleLogout(false), closeToggleMenu();
+                      handleLogout(), closeToggleMenu();
                     }}
                   >
                     <MdOutlineLogout className="icon" />

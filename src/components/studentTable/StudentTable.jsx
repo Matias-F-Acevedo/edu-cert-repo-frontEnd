@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
-import TableComponent from '../tableComponent/TableComponent';
+import { useState, useEffect, useContext } from "react";
+import TableComponent from "../tableComponent/TableComponent";
 import { getAll, getById } from "../../service/functionsHTTP";
+import { UserContext } from "../../context/UserContext";
 
 function StudentTable() {
   const [students, setStudents] = useState([]);
-
+  const { user } = useContext(UserContext);
 
   async function getStudents() {
     try {
       const url = `http://localhost:3000/api/students`;
-      const res = await getAll(url);
+      const res = await getAll(url, user.jwt);
 
       if (!res.ok) {
         throw new Error("Failed to fetch orders");
@@ -22,15 +23,50 @@ function StudentTable() {
   }
 
   useEffect(() => {
-    getStudents();
+    if (user) {
+      getStudents();
+    }
   }, []);
 
-  async function downloadCertificate(studentId){
-    const result = await getById(studentId,"http://localhost:3000/api/certificates/regular-student")
-    if (result.url) {
-      window.open(result.url, '_blank');
-    } else {
-      console.error('No URL found in the response');
+  async function downloadCertificate(student){
+    try {
+      const result = await getById(
+        student.id,
+        "http://localhost:3000/api/certificates/regular-student",
+        user.jwt
+      );
+  
+      if (result.url) {
+        const response = await fetch(result.url, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${user.jwt}`
+          }
+        });
+  
+        if (!response.ok) {
+          throw new Error('Error downloading the certificate');
+        }
+  
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+  
+        const a = document.createElement('a');
+        a.href = url;
+        const fileName = `${student.lastName.toUpperCase()}-${student.firstName.toUpperCase()}-DNI-${student.identificationNumber}-CONSTANCIA-ALUMNO-REGULAR.pdf`;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+  
+        window.URL.revokeObjectURL(url);
+        
+      } else {
+        console.error("No URL found in the response");
+      }
+    } catch (error) {
+      console.error("Error downloading certificate:", error);
+      alert("Failed to download certificate. Please try again.");
     }
   }
 
@@ -66,13 +102,19 @@ function StudentTable() {
     {
       header: "Certificado de alumno regular",
       cell: ({ row }) => {
-          const  studentId = row.original.id;
-          
-          return <div>
-              <button className="btn-table" onClick={()=> downloadCertificate(studentId)}>Descargar certificado</button>
-          </div>;
-      }
-  }
+        const student = row.original;
+        return (
+          <div>
+            <button
+              className="btn-table"
+              onClick={() => downloadCertificate(student)}
+            >
+              Descargar certificado
+            </button>
+          </div>
+        );
+      },
+    },
   ];
 
   return <TableComponent data={students} columns={columns}></TableComponent>;
