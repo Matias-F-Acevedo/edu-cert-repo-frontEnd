@@ -33,7 +33,7 @@ function Navbar() {
         <div className="container-nav-desktop">
           <div className="logo">
             <IoIosMenu onClick={() => toggleMenu()} className="menu-icon" />
-            <span className="logo-name" onClick={() => navigate(`/`)}>
+            <span className="logo-name" onClick={() => navigate(`/inicio`)}>
               Instituto Superior del Sudeste
             </span>
           </div>
