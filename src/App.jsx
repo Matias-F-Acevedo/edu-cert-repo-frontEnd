@@ -5,7 +5,7 @@ import ExamTable from "./components/examTable/ExamTable";
 import Login from "./components/login/Login";
 import { UserProvider } from "./context/UserContext";
 import { ProtectedRouterIfNotUser, ProtectedRouterIfUser } from "./components/utils/ProtectedRoute";
-
+import Career from "./components/careerSection/Career";
 function App() {
   return (
     <UserProvider>
@@ -18,7 +18,7 @@ function App() {
 
           <Route element={<ProtectedRouterIfNotUser redirectPath="/login" />}>
             <Route path="/inicio" element={<h2>inicio</h2>} />
-            <Route path="/carreras" element={<h2>carreras</h2>} />
+            <Route path="/carreras" element={<Career></Career>} />
             <Route
               path="/certificado-alumno-regular"
               element={<StudentTable />}
