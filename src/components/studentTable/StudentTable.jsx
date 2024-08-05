@@ -1,3 +1,4 @@
+import "./studentTable.css";
 import { useState, useEffect, useContext } from "react";
 import TableComponent from "../tableComponent/TableComponent";
 import { getAll, getById } from "../../service/functionsHTTP";
@@ -28,10 +29,10 @@ function StudentTable() {
     }
   }, []);
 
-  async function downloadCertificate(student){
+  async function downloadCertificate(student, careerId){
     try {
       const result = await getById(
-        student.id,
+        `${student.id}/${careerId}`,
         "http://localhost:3000/api/certificates/regular-student",
         user.jwt
       );
@@ -96,21 +97,26 @@ function StudentTable() {
       accessorKey: "phoneNumber",
     },
     {
-      header: "Carrera",
-      accessorKey: "career.name",
-    },
-    {
-      header: "Certificado de alumno regular",
+      header: "Carreras",
       cell: ({ row }) => {
         const student = row.original;
         return (
-          <div>
-            <button
-              className="btn-table"
-              onClick={() => downloadCertificate(student)}
-            >
-              Descargar certificado
-            </button>
+          <div className="container-career-button">
+            {student.careers && student.careers.length > 0 ? (
+              student.careers.map((career, index) => (
+                <div key={index} className="career-button">
+                  <span>{career.name}</span>
+                  <button
+                    className="btn-table"
+                    onClick={() => downloadCertificate(student, career.id)}
+          >
+                    Descargar certificado
+                  </button>
+                </div>
+              ))
+            ) : (
+              <div>No carreras asociadas</div>
+            )}
           </div>
         );
       },

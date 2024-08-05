@@ -1,0 +1,17 @@
+.container-career-button{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.career-button{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.career-button button{
+    width: 200px;
+}

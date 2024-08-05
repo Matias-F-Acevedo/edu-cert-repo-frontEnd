@@ -16,17 +16,18 @@ function App() {
       <BrowserRouter>
         <Navbar></Navbar>
         <Routes>
-          <Route element={<ProtectedRouterIfUser redirectPath="/inicio" />}>
+          <Route element={<ProtectedRouterIfUser redirectPath="/" />}>
             <Route path="/login" element={<Login></Login>} />
           </Route>
           <Route element={<ProtectedRouterIfNotUser redirectPath="/login" />}>
-            <Route path="/inicio" element={<h2>inicio</h2>} />
+            <Route path="/" element={<h2>inicio</h2>} />
             <Route path="/carreras" element={<Career></Career>} />
             <Route
               path="/certificado-alumno-regular"
               element={<StudentTable />}
             />
             <Route path="/certificados-examen" element={<ExamTable />} />
+            <Route path="*" element={<Login />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -49,7 +49,7 @@ function Login() {
       setError("Inicio de sesión exitoso.");
       setPassword("");
       setEmail("");
-      navigateTo("/inicio");
+      navigateTo("/");
     }
   }
 

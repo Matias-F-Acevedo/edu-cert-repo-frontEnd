@@ -32,7 +32,7 @@ function Navbar() {
         <div className="container-nav-desktop">
           <div className="logo">
             <IoIosMenu onClick={() => toggleMenu()} className="menu-icon" />
-            <span className="logo-name" onClick={() => navigate(`/inicio`)}>
+            <span className="logo-name" onClick={() => navigate(`/`)}>
               Instituto Superior del Sudeste
             </span>
           </div>
@@ -40,7 +40,7 @@ function Navbar() {
           {user ? (
             <ul>
               <li>
-                <Link to={"/inicio"}>Inicio</Link>{" "}
+                <Link to={"/"}>Inicio</Link>{" "}
               </li>
               <li>
                 <Link to={"/carreras"}>Carreras</Link>{" "}
@@ -61,7 +61,7 @@ function Navbar() {
           {user ? (
                
                   <Link
-                    to={"/inicio"}
+                    to={"/"}
                     className="nav-link"
                     onClick={() => {
                       handleLogout(), closeToggleMenu();
@@ -72,16 +72,7 @@ function Navbar() {
                   </Link>
                 
               ) : (
-               
-                  <Link
-                    to={"/login"}
-                    className="nav-link"
-                    onClick={() => closeToggleMenu()}
-                  >
-                    <MdOutlineLogin className="icon" />
-                    <span className="link">Iniciar sesión</span>
-                  </Link>
-            
+            <></>
               )}
                     </div>
         </div>

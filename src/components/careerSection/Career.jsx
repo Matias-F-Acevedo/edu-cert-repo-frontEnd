@@ -31,11 +31,14 @@ function Career() {
     }, []);
 
   return (
-    <ul>
+    <div className="career-section">
+      <ul>
       {careers.map((career, index) => (
         <li key={index}>{career.name}</li>
       ))}
     </ul>
+    </div>
+    
   );
 }
 

@@ -28,10 +28,10 @@ function ExamTable() {
     }
   }, []);
 
-  async function downloadCertificate(student, subjectId){
+  async function downloadCertificate(student, examId){
     try {
       const result = await getById(
-        `${student.id}/${subjectId}`,
+        `${student.id}/${examId}`,
         "http://localhost:3000/api/certificates/assistance-exam",
         user.jwt
       );
@@ -104,12 +104,13 @@ function ExamTable() {
       header: "Constancia de asistencia",
       cell: ({ row }) => {
         const student = row.original.student;
+        const examId = row.original.exam.id;
         return (
           <div>
             <button
               className="btn-table"
               onClick={() =>
-                downloadCertificate(student, row.original.exam.subject.id)
+                downloadCertificate(student, examId)
               }
             >
               Descargar certificado
